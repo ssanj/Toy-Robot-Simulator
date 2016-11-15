@@ -1,6 +1,6 @@
 package net.ssanj.robot
 
-  //TODO: Test
+//TODO: Test
 final case class BoardPos(x: Int, y: Int, direction: Direction) {
   def incX: BoardPos  = this.copy(x = x + 1)
   def decX: BoardPos  = this.copy(x = x - 1)

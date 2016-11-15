@@ -12,11 +12,11 @@ object CommandParser {
       dir  <- Direction.getDirection(d)
     } yield Place(BoardPos(xPos, yPos, dir))
 
-    case "MOVE" => Option(Move)
-    case "LEFT" => Option(Left)
-    case "RIGHT" => Option(Right)
+    case "MOVE"   => Option(Move)
+    case "LEFT"   => Option(Left)
+    case "RIGHT"  => Option(Right)
     case "REPORT" => Option(Report)
-    case _ => None
+    case _        => None
   }
 
   def getCommands(inputs: Seq[String]): Seq[Command] = inputs.map(interpret(_)).flatten
