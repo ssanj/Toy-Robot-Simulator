@@ -20,22 +20,22 @@ object RobotWorldProps extends Properties("RobotWorld") {
       expected = Option(Place(BoardPos(x, y, Direction.getDirection(dir).get))))
 
   private def getInputCommands: Gen[InputCommands] = for {
-    n        <-  Gen.choose(1, 10)
+    n        <- Gen.choose(1, 10)
     invalid  <- Gen.listOfN(n, Gen.alphaStr)
     place    <- genPlaceCommand
     commands <- Gen.listOfN(n, Gen.oneOf("MOVE", "LEFT", "RIGHT", "REPORT"))
   } yield InputCommands(
     value    = (invalid :+ place.value) ++ invalid ++ commands ++ invalid,
     expected =
-      RobotWorld.interpret(place.value).get +: commands.map(RobotWorld.interpret(_).get))
+      CommandParser.interpret(place.value).get +: commands.map(CommandParser.interpret(_).get))
 
   property("interpret PLACE commands") =
     Prop.forAll(genPlaceCommand) { input =>
-      RobotWorld.interpret(input.value) == input.expected
+      CommandParser.interpret(input.value) == input.expected
     }
 
   property("getCommands") =
     Prop.forAll(getInputCommands) { inputs =>
-      RobotWorld.getCommands(inputs.value) == inputs.expected
+      CommandParser.getCommands(inputs.value) == inputs.expected
     }
 }
