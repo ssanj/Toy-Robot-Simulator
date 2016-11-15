@@ -2,7 +2,6 @@ package net.ssanj.robot
 
 import org.scalatest.{Matchers, WordSpecLike}
 import io.IO.loadCommandsFromClasspath
-import Outcome.printReport
 
 final class RobotControllerIntSpec extends Matchers with WordSpecLike {
   "A RobotController" should {
@@ -14,7 +13,7 @@ final class RobotControllerIntSpec extends Matchers with WordSpecLike {
         val output   = RobotController.execute(robot, commands)
 
         output.robot should be (RobotOnBoard(board, BoardPos(2, 2, North)))
-        printReport(output.reports) should be ("2,2,NORTH")
+        output.string should be ("2,2,NORTH")
       }
     }
   }

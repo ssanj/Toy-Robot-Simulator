@@ -14,4 +14,8 @@ object Outcome {
       bps.map(report(_)).mkString("\n")
     }
   }
+
+  implicit class OutcomeString(val outcome: Outcome) extends AnyVal {
+    def string: String = printReport(outcome.reports)
+  }
 }
