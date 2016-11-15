@@ -91,5 +91,87 @@ final class RobotWorldSpec extends Matchers with WordSpecLike {
       }
     }
   }
+
+  it should {
+    "turn 90 degrees to the left" when {
+      "given a Left command" in {
+        val startPos = BoardPos(0, 0, North)
+        val pos2 = BoardPos(0, 0, West)
+        val pos3 = BoardPos(0, 0, South)
+        val pos4 = BoardPos(0, 0, East)
+
+        val commands =Seq(Place(startPos))
+        val outcome  = RobotWorld.exercise(robot, commands)
+        outcome.robot should be (RobotOnBoard(board , startPos))
+        val robotOnBoard = outcome.robot
+
+        val outcome2 = RobotWorld.exercise(robotOnBoard, Seq(Left))
+        outcome2.robot should be (RobotOnBoard(board , pos2))
+
+        val outcome3 = RobotWorld.exercise(robotOnBoard, Seq(Left, Left))
+        outcome3.robot should be (RobotOnBoard(board , pos3))
+
+        val outcome4 = RobotWorld.exercise(robotOnBoard, Seq(Left, Left, Left))
+        outcome4.robot should be (RobotOnBoard(board , pos4))
+
+        val outcome5 = RobotWorld.exercise(robotOnBoard, Seq(Left, Left, Left, Left))
+        outcome5.robot should be (RobotOnBoard(board , startPos))
+      }
+    }
+  }
+
+  it should {
+    "turn 90 degrees to the right" when {
+      "given a Right command" in {
+        val startPos = BoardPos(0, 0, North)
+        val pos2 = BoardPos(0, 0, East)
+        val pos3 = BoardPos(0, 0, South)
+        val pos4 = BoardPos(0, 0, West)
+
+        val commands =Seq(Place(startPos))
+        val outcome  = RobotWorld.exercise(robot, commands)
+        outcome.robot should be (RobotOnBoard(board , startPos))
+        val robotOnBoard = outcome.robot
+
+        val outcome2 = RobotWorld.exercise(robotOnBoard, Seq(Right))
+        outcome2.robot should be (RobotOnBoard(board , pos2))
+
+        val outcome3 = RobotWorld.exercise(robotOnBoard, Seq(Right, Right))
+        outcome3.robot should be (RobotOnBoard(board , pos3))
+
+        val outcome4 = RobotWorld.exercise(robotOnBoard, Seq(Right, Right, Right))
+        outcome4.robot should be (RobotOnBoard(board , pos4))
+
+        val outcome5 = RobotWorld.exercise(robotOnBoard, Seq(Right, Right, Right, Right))
+        outcome5.robot should be (RobotOnBoard(board , startPos))
+      }
+    }
+  }
+
+  it should {
+    "accept multiple Place commands" when {
+      "it has been successfully initialised on the board" in {
+        val startPos1  = BoardPos(3, 3, North)
+        val endPos1    = BoardPos(2, 4, West)
+        val commands1  = Seq(Place(startPos1), Move, Left, Move)
+        val outcome    = RobotWorld.exercise(robot, commands1)
+        val robotAtOne = outcome.robot
+        robotAtOne should be (RobotOnBoard(board, endPos1))
+
+        val startPos2  = BoardPos(1, 2, West)
+        val endPos2    = BoardPos(0, 4, North)
+        val commands2  = Seq(Place(startPos2), Right, Move, Move, Left, Move, Right)
+        val outcome2   = RobotWorld.exercise(robotAtOne, commands2)
+        val robotAtTwo = outcome2.robot
+
+        robotAtTwo should be (RobotOnBoard(board , endPos2))
+
+        val startPos3 = BoardPos(5, 5, South)
+        val outcome3 = RobotWorld.exercise(robotAtTwo, Seq(Place(startPos3)))
+        //should still be at previous location, because we supplied an invalid Place.
+        outcome3.robot should be (RobotOnBoard(board , endPos2))
+      }
+    }
+  }
 }
 

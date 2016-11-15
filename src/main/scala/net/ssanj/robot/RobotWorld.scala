@@ -24,13 +24,28 @@ case object Report                    extends Command
 object Robot {
 
   def instruct(robot: Robot, command: Command): Outcome = (command, robot) match {
-    case (Place(boardPos), RobotNotOnBoard(board)) =>
-      if (board.contains(boardPos)) Outcome(RobotOnBoard(board, boardPos))
-      else Outcome(robot)
-    case (_, RobotNotOnBoard(_)) => Outcome(robot)
-    case (Report, RobotOnBoard(_, pos)) => Outcome(robot, Seq(pos))
-    case (Move, r @ RobotOnBoard(_, _)) => moveByOne(r)
-    case (c, RobotOnBoard(board, pos)) => ???
+    case (Place(boardPos), RobotNotOnBoard(board)) if board.contains(boardPos) => Outcome(RobotOnBoard(board, boardPos))
+    case (_, RobotNotOnBoard(_))              => Outcome(robot)
+    case (Report, RobotOnBoard(_, pos))       => Outcome(robot, Seq(pos))
+    case (Move, r @ RobotOnBoard(_, _))       => moveByOne(r)
+    case (Left, r @ RobotOnBoard(_, bp))      =>  Outcome(r.copy(pos = turnLeft(bp)))
+    case (Right, r @ RobotOnBoard(_, bp))     => Outcome(r.copy(pos = turnRight(bp)))
+    case (Place(pos), r @ RobotOnBoard(board, _)) if board.contains(pos) => Outcome(r.copy(pos = pos))
+    case (_, r @ RobotOnBoard(_, _))          => Outcome(r)
+  }
+
+  def turnLeft(boardPos: BoardPos): BoardPos = boardPos match {
+    case bp @ BoardPos(_, _, North) => bp.copy(direction = West)
+    case bp @ BoardPos(_, _, South) => bp.copy(direction = East)
+    case bp @ BoardPos(_, _, East)  => bp.copy(direction = North)
+    case bp @ BoardPos(_, _, West)  => bp.copy(direction = South)
+  }
+
+  def turnRight(boardPos: BoardPos): BoardPos = boardPos match {
+    case bp @ BoardPos(_, _, North) => bp.copy(direction = East)
+    case bp @ BoardPos(_, _, South) => bp.copy(direction = West)
+    case bp @ BoardPos(_, _, East)  => bp.copy(direction = South)
+    case bp @ BoardPos(_, _, West)  => bp.copy(direction = North)
   }
 
   def moveByOne(robot: Robot): Outcome = robot match {
