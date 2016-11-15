@@ -11,6 +11,8 @@ object Outcome {
     s"${bp.x},${bp.y},${direction}"
   }
 
-  //TODO: Test
-  def printReport(bps: Seq[BoardPos]): String = bps.map(report).mkString("\n")
+  def printReport(bps: Seq[BoardPos]): String = {
+    if (bps.isEmpty) "-"
+    else bps.map(report).mkString("\n")
+  }
 }
