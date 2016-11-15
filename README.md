@@ -2,7 +2,6 @@
 
 REA Robot Assignment
 
-[] Add missing tests
 [] Add more property tests around the board
 [] Add scaladoc
 [] Add some linting tools

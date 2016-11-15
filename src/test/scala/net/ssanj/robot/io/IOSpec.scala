@@ -6,7 +6,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 
 final class IOSpec extends Matchers with WordSpecLike {
   "An IO loader" should {
-    "get commands" when {
+    "load commands from the classpath" when {
       "given a command file without errors" in {
         val commands = IO.loadCommandsFromClasspath("commands1.txt")
         commands should have ('size (6))
@@ -22,7 +22,7 @@ final class IOSpec extends Matchers with WordSpecLike {
       }
     }
 
-    "get commands" when {
+    "load commands from the classpath" when {
       "a given a command file with errors" in {
         val commands = IO.loadCommandsFromClasspath("commands2.txt")
         commands should have ('size (3))

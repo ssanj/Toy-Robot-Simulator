@@ -16,8 +16,7 @@ object Robot {
   def instruct(robot: Robot, commands: Seq[Command]): Outcome =
     commands.foldLeft(Outcome(robot)){(o, c) => Robot.instruct(o.robot, c)}
 
-  //TODO: Test
-  def moveByOne(robot: Robot): Outcome = robot match {
+  private def moveByOne(robot: Robot): Outcome = robot match {
     case r @ RobotOnBoard(board, bp @ BoardPos(_, _, North)) =>
         Outcome(r.copy(pos = bp.update(board, bp.incY)))
     case r @ RobotOnBoard(board, bp @ BoardPos(_, _, South)) =>
@@ -34,8 +33,6 @@ sealed trait Robot {
   val board: Board
 }
 
-//TODO: How can we make it such that you can't create Robot without a valid board?
-//What we want to do is to force the creation of RobotNotOnBoard and then
-//have the code move that to RobotOnBoard when given a valid Place command.
 final case class RobotNotOnBoard (board: Board) extends Robot
+
 final case class RobotOnBoard(board: Board, pos: BoardPos) extends Robot

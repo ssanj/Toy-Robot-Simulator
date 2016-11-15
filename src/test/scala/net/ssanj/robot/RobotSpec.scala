@@ -45,9 +45,25 @@ final class RobotSpec extends Matchers with WordSpecLike {
             Place(BoardPos(-1, 3, North)),
             Place(BoardPos(3, -1, North)),
             Place(BoardPos(4, 10, North)),
-            Place(BoardPos(10, 4, North)))
+            Place(BoardPos(10, 4, North))
+          )
         val outcome = Robot.instruct(robot, commands)
         outcome.robot should be (robot)
+      }
+    }
+  }
+
+  it should {
+    "drop Place commands" when {
+      "they are not on the board after initialisation" in {
+        val startPos = BoardPos(1, 1, North)
+        val commands =
+          Seq(
+            Place(startPos),
+            Place(BoardPos(-1, 3, North))
+          )
+        val outcome = Robot.instruct(robot, commands)
+        outcome.robot should be (RobotOnBoard(board , startPos))
       }
     }
   }
