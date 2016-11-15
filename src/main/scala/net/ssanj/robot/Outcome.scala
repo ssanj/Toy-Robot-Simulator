@@ -13,7 +13,7 @@ object Outcome {
   def printReport(bps: Seq[BoardPos]): String = {
     if (bps.length == 1) report(bps.head)
     else {
-      bps.map(report(_)).mkString("\n")
+      bps.map(report).mkString("\n")
     }
   }
 }

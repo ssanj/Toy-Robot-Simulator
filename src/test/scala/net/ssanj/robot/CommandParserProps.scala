@@ -1,7 +1,6 @@
 package net.ssanj.robot
 
-import org.scalacheck.Properties
-import org.scalacheck.{Prop, Gen}
+import org.scalacheck.{Gen, Prop, Properties}
 
 object CommandParserProps extends Properties("CommandParser") {
 
