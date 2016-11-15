@@ -41,6 +41,8 @@ object Robot {
     case bp @ BoardPos(_, _, West)  => bp.copy(direction = South)
   }
 
+  //TODO: Can we use some look up for these values?
+  //modulo List? ["N", "E", "S", "W"], Left = -1, Right +1 and rotate
   def turnRight(boardPos: BoardPos): BoardPos = boardPos match {
     case bp @ BoardPos(_, _, North) => bp.copy(direction = East)
     case bp @ BoardPos(_, _, South) => bp.copy(direction = West)
@@ -48,6 +50,7 @@ object Robot {
     case bp @ BoardPos(_, _, West)  => bp.copy(direction = North)
   }
 
+  //TODO: Make Board handle the invalid cases and keep this clean.
   def moveByOne(robot: Robot): Outcome = robot match {
     case r @ RobotOnBoard(board, bp @ BoardPos(_, _, North)) if board.contains(bp.incY) =>
         Outcome(r.copy(pos = bp.incY))
@@ -78,6 +81,19 @@ final case class Board(size: Size) {
   (boardPos.y >= 0 && boardPos.y < size.width)
 }
 final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty)
+
+object Outcome {
+
+  private def report(bp: BoardPos): String =
+  s"${bp.x},${bp.y},${bp.direction.toString.map(_.toUpper)}"
+
+  def printReport(bps: Seq[BoardPos]): String = {
+    if (bps.length == 1) report(bps.head)
+    else {
+      bps.map(report(_)).mkString("\n")
+    }
+  }
+}
 
 object RobotWorld {
   //Will be used like: Seq[Intput] => Seq[Command]
