@@ -6,6 +6,17 @@ case object South extends Direction
 case object East  extends Direction
 case object West  extends Direction
 
+object Direction {
+
+  //TODO: Test
+  def getDirection(value: String): Option[Direction] = value match {
+    case x if x.equalsIgnoreCase("North") => Option(North)
+    case x if x.equalsIgnoreCase("South") => Option(South)
+    case x if x.equalsIgnoreCase("East")  => Option(East)
+    case x if x.equalsIgnoreCase("West")  => Option(West)
+  }
+}
+
 
 final case class BoardPos(x: Int, y: Int, direction: Direction) {
   def incX: BoardPos = BoardPos(x + 1, y, direction)
@@ -96,12 +107,30 @@ object Outcome {
 }
 
 object RobotWorld {
-  //Will be used like: Seq[Intput] => Seq[Command]
-  def intepret(input: String): Option[Command] = ???
 
-  def validate(robot: Robot, command: Command): Boolean = ???
+  import scala.util.Try
 
-  def validateBoardCommand(board: Board, command: Command): Boolean = ???
+  val PlaceCommand = """PLACE\s(\d+),(\d+),(NORTH|SOUTH|EAST|WEST)""".r
+
+  def interpret(input: String): Option[Command] = input match {
+    case PlaceCommand(x, y, d) => for {
+      xPos <- Try(x.toInt).toOption
+      yPos <- Try(y.toInt).toOption
+      dir  <- Direction.getDirection(d)
+    } yield Place(BoardPos(xPos, yPos, dir))
+
+    case "MOVE" => Option(Move)
+    case "LEFT" => Option(Left)
+    case "RIGHT" => Option(Right)
+    case "REPORT" => Option(Report)
+    case _ => None
+  }
+
+  def getCommands(inputs: Seq[String]): Seq[Command] = inputs.map(interpret(_)).flatten
+
+  // def validate(robot: Robot, command: Command): Boolean = ???
+
+  // def validateBoardCommand(board: Board, command: Command): Boolean = ???
 
   //Where should this method live?
   def exercise(robot: Robot, commands: Seq[Command]): Outcome =

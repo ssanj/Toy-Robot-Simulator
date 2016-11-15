@@ -1,0 +1,10 @@
+PLACE 4,1,NORTH
+left
+moVe
+Back
+Up
+MOVE
+Forward
+turn
+LEFT
+report
