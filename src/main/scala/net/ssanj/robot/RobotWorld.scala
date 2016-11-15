@@ -7,7 +7,12 @@ case object East  extends Direction
 case object West  extends Direction
 
 
-final case class BoardPos(x: Int, y: Int, direction: Direction)
+final case class BoardPos(x: Int, y: Int, direction: Direction) {
+  def incX: BoardPos = BoardPos(x + 1, y, direction)
+  def decX: BoardPos = BoardPos(x - 1, y, direction)
+  def incY: BoardPos = BoardPos(x, y + 1, direction)
+  def decY: BoardPos = BoardPos(x, y - 1, direction)
+}
 
 sealed trait Command
 final case class Place(pos: BoardPos) extends Command
@@ -23,7 +28,21 @@ object Robot {
       if (board.contains(boardPos)) Outcome(RobotOnBoard(board, boardPos))
       else Outcome(robot)
     case (_, RobotNotOnBoard(_)) => Outcome(robot)
+    case (Report, RobotOnBoard(_, pos)) => Outcome(robot, Seq(pos))
+    case (Move, r @ RobotOnBoard(_, _)) => moveByOne(r)
     case (c, RobotOnBoard(board, pos)) => ???
+  }
+
+  def moveByOne(robot: Robot): Outcome = robot match {
+    case r @ RobotOnBoard(board, bp @ BoardPos(_, _, North)) if board.contains(bp.incY) =>
+        Outcome(r.copy(pos = bp.incY))
+    case r @ RobotOnBoard(board, bp @ BoardPos(_, _, South)) if board.contains(bp.decY) =>
+        Outcome(r.copy(pos = bp.decY))
+    case r @ RobotOnBoard(board, bp @ BoardPos(_, _, East)) if board.contains(bp.incX) =>
+        Outcome(r.copy(pos = bp.incX))
+    case r @ RobotOnBoard(board, bp @ BoardPos(_, _, West)) if board.contains(bp.decX) =>
+        Outcome(r.copy(pos = bp.decX))
+    case _ => Outcome(robot)
   }
 
   def validate(robot: Robot, command: Command): Boolean = ???
