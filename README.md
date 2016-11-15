@@ -2,11 +2,6 @@
 
 REA Robot Assignment
 
-Todo
-
-[] Add more property tests around the board
-[] Add scaladoc - much of this is needed?
-
 ## Building
 
 To compile the source and tests run:
@@ -25,7 +20,7 @@ sbt test
 
 ## Running
 
-To run the main application (RobotRunner) invoke:
+To run the main application (net.ssanj.robot.RobotRunner) invoke:
 
 ```
 sbt run
@@ -35,7 +30,7 @@ sbt run
 
 Coverage can be enabled by doing the following:
 
-1. Instrument code and tests with
+1. Instrument code and tests with:
 
 ```
 sbt clean coverage test
@@ -57,6 +52,17 @@ sbt scapegoat
 ```
 
 Reports can be found under __target/scala-2.11/scoverage-report/index.html__.
+
+## Scaladoc
+
+To generate scaladoc for the sources use:
+
+```
+sbt doc
+```
+
+The API documentation can be found under __target/scala-2.11/api/index.html__.
+
 
 ## Using the API
 

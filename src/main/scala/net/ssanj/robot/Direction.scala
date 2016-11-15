@@ -1,5 +1,11 @@
 package net.ssanj.robot
 
+/** ADT for directions. Comprises of:
+  *  1. [[net.ssanj.robot.North]]
+  *  1. [[net.ssanj.robot.South]]
+  *  1. [[net.ssanj.robot.East]]
+  *  1. [[net.ssanj.robot.West]]
+  */
 sealed trait Direction extends Product with Serializable {
   val left: Direction
   val right: Direction
@@ -34,7 +40,12 @@ object Direction {
 
   val directions = Seq(North, South, East, West)
 
-  def getDirection(value: String): Option[Direction] = {
-    directions.find(_.name.equalsIgnoreCase(value))
+  /** Returns an optional [[net.ssanj.robot.Direction]] given a name.
+    *
+    *  @param name The name of the direction to return.
+    *  @return Option[Direction] Some if a case-insensitive match was found or None otherwise.
+    */
+  def getDirection(name: String): Option[Direction] = {
+    directions.find(_.name.equalsIgnoreCase(name))
   }
 }
