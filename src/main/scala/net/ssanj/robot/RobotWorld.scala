@@ -59,11 +59,6 @@ object Robot {
         Outcome(r.copy(pos = bp.decX))
     case _ => Outcome(robot)
   }
-
-  def validate(robot: Robot, command: Command): Boolean = ???
-
-  def validateBoardCommand(board: Board, command: Command): Boolean = ???
-
 }
 
 sealed trait Robot {
@@ -87,6 +82,10 @@ final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty)
 object RobotWorld {
   //Will be used like: Seq[Intput] => Seq[Command]
   def intepret(input: String): Option[Command] = ???
+
+  def validate(robot: Robot, command: Command): Boolean = ???
+
+  def validateBoardCommand(board: Board, command: Command): Boolean = ???
 
   //Where should this method live?
   def exercise(robot: Robot, commands: Seq[Command]): Outcome =
