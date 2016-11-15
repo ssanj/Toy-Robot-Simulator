@@ -11,7 +11,7 @@ final class RobotGivenExampleSpec extends Matchers with WordSpecLike {
     "pass Example a" in {
       val pos      = BoardPos(0, 0, North)
       val commands = Seq(Place(pos), Move, Report)
-      val outcome  = Robot.instruct(robot, commands)
+      val outcome  = Robot.sequence(robot, commands)
       outcome.robot should be (RobotOnBoard(board, BoardPos(0, 1, North)))
       outcome.value should be ("0,1,NORTH")
     }
@@ -19,7 +19,7 @@ final class RobotGivenExampleSpec extends Matchers with WordSpecLike {
     "pass Example b" in {
       val pos      = BoardPos(0, 0, North)
       val commands = Seq(Place(pos), Left, Report)
-      val outcome  = Robot.instruct(robot, commands)
+      val outcome  = Robot.sequence(robot, commands)
       outcome.robot should be (RobotOnBoard(board, BoardPos(0, 0, West)))
       outcome.value should be ("0,0,WEST")
     }
@@ -27,7 +27,7 @@ final class RobotGivenExampleSpec extends Matchers with WordSpecLike {
     "pass Example c" in {
       val pos      = BoardPos(1, 2, East)
       val commands = Seq(Place(pos), Move, Move, Left, Move, Report)
-      val outcome  = Robot.instruct(robot, commands)
+      val outcome  = Robot.sequence(robot, commands)
       outcome.robot should be (RobotOnBoard(board, BoardPos(3, 3, North)))
       outcome.value should be ("3,3,NORTH")
     }

@@ -13,7 +13,7 @@ object Robot {
     case (_, r @ RobotOnBoard(_, _))          => Outcome(r)
   }
 
-  def instruct(robot: Robot, commands: Seq[Command]): Outcome =
+  def sequence(robot: Robot, commands: Seq[Command]): Outcome =
     commands.foldLeft(Outcome(robot)){(o, c) => Robot.instruct(o.robot, c)}
 
   private def moveByOne(robot: Robot): Outcome = robot match {

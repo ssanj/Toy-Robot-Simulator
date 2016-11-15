@@ -6,9 +6,6 @@ Todo
 
 [] Add more property tests around the board
 [] Add scaladoc - much of this is needed?
-[] Add some linting tools
-[] Run through Intellij
-[] Optimise imports
 
 ## Building
 
@@ -48,6 +45,15 @@ sbt clean coverage test
 
 ```
 sbt coverageReport
+```
+
+## Scapegoat
+
+
+To run [Scapegoat](https://github.com/sksamuel/scapegoat) use:
+
+```
+sbt scapegoat
 ```
 
 Reports can be found under __target/scala-2.11/scoverage-report/index.html__.

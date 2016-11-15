@@ -1,19 +1,16 @@
 package net.ssanj.robot
 
-final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty) {
+final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty[BoardPos]) {
   val value: String = Outcome.printReport(reports)
 }
 
 object Outcome {
 
-  private def report(bp: BoardPos): String =
-  s"${bp.x},${bp.y},${bp.direction.toString.map(_.toUpper)}"
+  private def report(bp: BoardPos): String = {
+    val direction = bp.direction.name.map(_.toUpper)
+    s"${bp.x},${bp.y},${direction}"
+  }
 
   //TODO: Test
-  def printReport(bps: Seq[BoardPos]): String = {
-    if (bps.length == 1) report(bps.head)
-    else {
-      bps.map(report).mkString("\n")
-    }
-  }
+  def printReport(bps: Seq[BoardPos]): String = bps.map(report).mkString("\n")
 }

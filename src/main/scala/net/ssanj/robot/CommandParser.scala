@@ -19,5 +19,5 @@ object CommandParser {
     case _        => None
   }
 
-  def getCommands(inputs: Seq[String]): Seq[Command] = inputs.flatMap(interpret)
+  def getCommands(inputs: Seq[String]): Seq[Command] = inputs.flatMap(interpret(_).toList)
 }

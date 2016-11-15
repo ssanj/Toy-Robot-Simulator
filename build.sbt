@@ -27,5 +27,3 @@ scalacOptions ++= Seq(
                       "-Ywarn-unused",
                       "-Ywarn-value-discard"
                      )
-
-initialCommands := "import net.ssanj.robot._"

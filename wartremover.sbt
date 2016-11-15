@@ -1,0 +1,1 @@
+wartremoverErrors in (Compile, compile) ++= Warts.allBut(Wart.DefaultArguments, Wart.NoNeedForMonad)

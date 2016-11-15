@@ -9,6 +9,6 @@ object IO {
 
   def loadCommandsFromClasspath(file: String): Seq[Command] = Try {
     val  buffer = scala.io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream(file))
-    buffer.getLines.map(CommandParser.interpret).flatten.toSeq
-  }.toOption.toSeq.flatten
+    buffer.getLines.toSeq.flatMap(CommandParser.interpret(_).toList)
+  }.toOption.toList.flatten
 }
