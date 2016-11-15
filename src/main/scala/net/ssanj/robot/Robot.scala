@@ -30,7 +30,8 @@ object Robot {
   def sequence(robot: Robot, commands: Seq[Command]): Outcome =
     commands.foldLeft(Outcome(robot)){(o, c) => Robot.instruct(o.robot, c)}
 
-  private def moveByOne(robot: Robot): Outcome = robot match {
+  //for testing
+  protected[robot] def moveByOne(robot: Robot): Outcome = robot match {
     case r @ RobotOnBoard(board, bp @ BoardPos(_, _, North)) =>
         Outcome(r.copy(pos = bp.update(board, bp.incY)))
     case r @ RobotOnBoard(board, bp @ BoardPos(_, _, South)) =>

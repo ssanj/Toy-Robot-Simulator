@@ -1,0 +1,1 @@
+coverageExcludedPackages := "net.ssanj.robot.RobotRunner.*"

@@ -174,5 +174,14 @@ final class RobotSpec extends Matchers with WordSpecLike {
       }
     }
   }
+
+  it should {
+    "return the supplied Robot" when {
+      "Move is called in an uninitialised state" in {
+        val outcome = Robot.moveByOne(robot)
+        outcome.robot should be (robot)
+      }
+    }
+  }
 }
 
