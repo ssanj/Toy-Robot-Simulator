@@ -1,6 +1,8 @@
 package net.ssanj.robot
 
-final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty)
+final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty) {
+  val string: String = Outcome.printReport(reports)
+}
 
 object Outcome {
 
@@ -13,9 +15,5 @@ object Outcome {
     else {
       bps.map(report(_)).mkString("\n")
     }
-  }
-
-  implicit class OutcomeString(val outcome: Outcome) extends AnyVal {
-    def string: String = printReport(outcome.reports)
   }
 }

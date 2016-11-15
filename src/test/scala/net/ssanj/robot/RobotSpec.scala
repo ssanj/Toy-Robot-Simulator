@@ -7,7 +7,6 @@ final class RobotSpec extends Matchers with WordSpecLike {
   val board    = Board(Size(5, 5))
   val robot    = RobotNotOnBoard(board)
 
-
   "A Robot" should {
     "be initialised" when {
       "given a valid Place command" in {
@@ -31,7 +30,7 @@ final class RobotSpec extends Matchers with WordSpecLike {
     "drop non-Place commands" when {
       "not initialised on the board" in {
         val commands = Seq(Move, Left, Right, Report)
-        val outcome = RobotController.execute(robot, commands)
+        val outcome = Robot.instruct(robot, commands)
         outcome.robot should be (robot)
       }
     }
@@ -39,7 +38,7 @@ final class RobotSpec extends Matchers with WordSpecLike {
 
   it should {
     "drop Place commands" when {
-      "that are not on the board" in {
+      "they are not on the board" in {
         val commands =
           Seq(
             Place(BoardPos(10, 10, North)),
@@ -47,7 +46,7 @@ final class RobotSpec extends Matchers with WordSpecLike {
             Place(BoardPos(3, -1, North)),
             Place(BoardPos(4, 10, North)),
             Place(BoardPos(10, 4, North)))
-        val outcome = RobotController.execute(robot, commands)
+        val outcome = Robot.instruct(robot, commands)
         outcome.robot should be (robot)
       }
     }
@@ -58,7 +57,7 @@ final class RobotSpec extends Matchers with WordSpecLike {
       "it gets a Report command" in {
         val newPos   = BoardPos(4, 4, East)
         val commands =Seq(Place(newPos), Report)
-        val outcome  = RobotController.execute(robot, commands)
+        val outcome  = Robot.instruct(robot, commands)
         outcome.robot should be (RobotOnBoard(board , newPos))
         outcome.reports should be (Seq(newPos))
       }
@@ -72,22 +71,8 @@ final class RobotSpec extends Matchers with WordSpecLike {
         val newPos   = BoardPos(1, 0, East)
 
         val commands =Seq(Place(startPos), Move)
-        val outcome  = RobotController.execute(robot, commands)
+        val outcome  = Robot.instruct(robot, commands)
         outcome.robot should be (RobotOnBoard(board , newPos))
-      }
-    }
-  }
-
-  it should {
-    "report 0,1,North" when {
-      "using example a" in {
-        val startPos = BoardPos(0, 0, North)
-        val newPos   = BoardPos(0, 1, North)
-
-        val commands =Seq(Place(startPos), Move, Report)
-        val outcome  = RobotController.execute(robot, commands)
-        outcome.robot should be (RobotOnBoard(board , newPos))
-        outcome.reports should be (Seq(newPos))
       }
     }
   }
@@ -100,21 +85,21 @@ final class RobotSpec extends Matchers with WordSpecLike {
         val pos3 = BoardPos(0, 0, South)
         val pos4 = BoardPos(0, 0, East)
 
-        val commands =Seq(Place(startPos))
-        val outcome  = RobotController.execute(robot, commands)
+        val commands = Seq(Place(startPos))
+        val outcome  = Robot.instruct(robot, commands)
         outcome.robot should be (RobotOnBoard(board , startPos))
         val robotOnBoard = outcome.robot
 
-        val outcome2 = RobotController.execute(robotOnBoard, Seq(Left))
+        val outcome2 = Robot.instruct(robotOnBoard, Seq(Left))
         outcome2.robot should be (RobotOnBoard(board , pos2))
 
-        val outcome3 = RobotController.execute(robotOnBoard, Seq(Left, Left))
+        val outcome3 = Robot.instruct(robotOnBoard, Seq(Left, Left))
         outcome3.robot should be (RobotOnBoard(board , pos3))
 
-        val outcome4 = RobotController.execute(robotOnBoard, Seq(Left, Left, Left))
+        val outcome4 = Robot.instruct(robotOnBoard, Seq(Left, Left, Left))
         outcome4.robot should be (RobotOnBoard(board , pos4))
 
-        val outcome5 = RobotController.execute(robotOnBoard, Seq(Left, Left, Left, Left))
+        val outcome5 = Robot.instruct(robotOnBoard, Seq(Left, Left, Left, Left))
         outcome5.robot should be (RobotOnBoard(board , startPos))
       }
     }
@@ -129,20 +114,20 @@ final class RobotSpec extends Matchers with WordSpecLike {
         val pos4 = BoardPos(0, 0, West)
 
         val commands =Seq(Place(startPos))
-        val outcome  = RobotController.execute(robot, commands)
+        val outcome  = Robot.instruct(robot, commands)
         outcome.robot should be (RobotOnBoard(board , startPos))
         val robotOnBoard = outcome.robot
 
-        val outcome2 = RobotController.execute(robotOnBoard, Seq(Right))
+        val outcome2 = Robot.instruct(robotOnBoard, Seq(Right))
         outcome2.robot should be (RobotOnBoard(board , pos2))
 
-        val outcome3 = RobotController.execute(robotOnBoard, Seq(Right, Right))
+        val outcome3 = Robot.instruct(robotOnBoard, Seq(Right, Right))
         outcome3.robot should be (RobotOnBoard(board , pos3))
 
-        val outcome4 = RobotController.execute(robotOnBoard, Seq(Right, Right, Right))
+        val outcome4 = Robot.instruct(robotOnBoard, Seq(Right, Right, Right))
         outcome4.robot should be (RobotOnBoard(board , pos4))
 
-        val outcome5 = RobotController.execute(robotOnBoard, Seq(Right, Right, Right, Right))
+        val outcome5 = Robot.instruct(robotOnBoard, Seq(Right, Right, Right, Right))
         outcome5.robot should be (RobotOnBoard(board , startPos))
       }
     }
@@ -154,20 +139,20 @@ final class RobotSpec extends Matchers with WordSpecLike {
         val startPos1  = BoardPos(3, 3, North)
         val endPos1    = BoardPos(2, 4, West)
         val commands1  = Seq(Place(startPos1), Move, Left, Move)
-        val outcome    = RobotController.execute(robot, commands1)
+        val outcome    = Robot.instruct(robot, commands1)
         val robotAtOne = outcome.robot
         robotAtOne should be (RobotOnBoard(board, endPos1))
 
         val startPos2  = BoardPos(1, 2, West)
         val endPos2    = BoardPos(0, 4, North)
         val commands2  = Seq(Place(startPos2), Right, Move, Move, Left, Move, Right)
-        val outcome2   = RobotController.execute(robotAtOne, commands2)
+        val outcome2   = Robot.instruct(robotAtOne, commands2)
         val robotAtTwo = outcome2.robot
 
         robotAtTwo should be (RobotOnBoard(board , endPos2))
 
         val startPos3 = BoardPos(5, 5, South)
-        val outcome3 = RobotController.execute(robotAtTwo, Seq(Place(startPos3)))
+        val outcome3 = Robot.instruct(robotAtTwo, Seq(Place(startPos3)))
         //should still be at previous location, because we supplied an invalid Place.
         outcome3.robot should be (RobotOnBoard(board , endPos2))
       }

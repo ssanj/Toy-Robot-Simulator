@@ -2,9 +2,9 @@ package net.ssanj.robot
 
 import org.scalatest.{Matchers, WordSpecLike}
 
-final class RobotWorldSpec extends Matchers with WordSpecLike {
-  "A RobotWorld" should {
-    "interpret commands" when {
+final class CommandParserSpec extends Matchers with WordSpecLike {
+  "A CommandParser" should {
+    "parse commands" when {
       "given a valid String" in {
         CommandParser.interpret("MOVE")   should be (Option(Move))
         CommandParser.interpret("LEFT")   should be (Option(Left))
@@ -15,7 +15,7 @@ final class RobotWorldSpec extends Matchers with WordSpecLike {
   }
 
   it should {
-    "not interpret commands" when {
+    "drop invalid commands" when {
       "given an invalid String" in {
         CommandParser.interpret("UP")     should be (None)
         CommandParser.interpret("DOWN")   should be (None)

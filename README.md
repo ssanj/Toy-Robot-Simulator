@@ -7,7 +7,6 @@ REA Robot Assignment
 [] Add scaladoc
 [] Add some linting tools
 [] Move internal api to internal package and scope
-[] Remove deprecated execute method on RobotController
 [] Complete README.md
 [] Run through Intellij
 [] Optimise imports
@@ -17,5 +16,6 @@ REA Robot Assignment
 ## Tests
 
 ## Running
+- Application
 
 ## Coverage

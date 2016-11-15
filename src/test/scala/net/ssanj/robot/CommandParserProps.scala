@@ -3,11 +3,13 @@ package net.ssanj.robot
 import org.scalacheck.Properties
 import org.scalacheck.{Prop, Gen}
 
-object RobotWorldProps extends Properties("RobotWorld") {
+object CommandParserProps extends Properties("CommandParser") {
 
   final case class InputCommand(value: String, expected: Option[Command])
 
   final case class InputCommands(value: Seq[String], expected: Seq[Command])
+
+  private val validInputs = Seq("MOVE", "LEFT", "RIGHT", "REPORT")
 
   private def genPlaceCommand: Gen[InputCommand] = for {
     size <- Gen.choose(1, 10)
@@ -19,13 +21,20 @@ object RobotWorldProps extends Properties("RobotWorld") {
       value    = s"PLACE ${x},${y},${dir}",
       expected = Option(Place(BoardPos(x, y, Direction.getDirection(dir).get))))
 
+  private def getInvalidInputs(valid: Seq[String]): Gen[Seq[String]] = for {
+    n       <- Gen.choose(1, 5)
+    invalid <- Gen.listOfN(n, Gen.alphaStr).filter(x => !valid.contains(x))
+  } yield invalid
+
   private def getInputCommands: Gen[InputCommands] = for {
-    n        <- Gen.choose(1, 10)
-    invalid  <- Gen.listOfN(n, Gen.alphaStr)
+    invalid1  <- getInvalidInputs(validInputs)
+    invalid2  <- getInvalidInputs(validInputs)
+    invalid3  <- getInvalidInputs(validInputs)
+    n       <- Gen.choose(1, 5)
     place    <- genPlaceCommand
-    commands <- Gen.listOfN(n, Gen.oneOf("MOVE", "LEFT", "RIGHT", "REPORT"))
+    commands <- Gen.listOfN(n, Gen.oneOf(validInputs))
   } yield InputCommands(
-    value    = (invalid :+ place.value) ++ invalid ++ commands ++ invalid,
+    value    = (invalid1 :+ place.value) ++ invalid2 ++ commands ++ invalid3,
     expected =
       CommandParser.interpret(place.value).get +: commands.map(CommandParser.interpret(_).get))
 

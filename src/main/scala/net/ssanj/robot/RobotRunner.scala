@@ -7,5 +7,5 @@ object RobotRunner extends App {
   val commands = loadCommandsFromClasspath("commands.txt")
   val output   = RobotController.execute(board, commands)
 
-  println(output.string)
+  println(output.value) //3,3,NORTH
 }
