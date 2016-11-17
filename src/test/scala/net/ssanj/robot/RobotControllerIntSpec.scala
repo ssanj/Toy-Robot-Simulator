@@ -14,5 +14,15 @@ final class RobotControllerIntSpec extends Matchers with WordSpecLike {
         output.value should be ("2,2,NORTH")
       }
     }
+
+    "execute commands on a Robot" when {
+      "commands are loaded from a file with errors" in {
+        val commands = loadCommandsFromClasspath("commands4.txt")
+        val board    = Board(Size(5, 5))
+        val output   = RobotController.execute(board, commands)
+
+        output.value should be ("3,2,WEST")
+      }
+    }
   }
 }

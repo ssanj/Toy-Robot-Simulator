@@ -1,0 +1,20 @@
+//This is not a Command
+MOVE
+REPORT
+LEFT
+RIGHT
+
+PLACE 4,1,NORTH
+left
+moVe
+Back
+Up
+MOVE
+Forward
+turn
+LEFT
+report
+MOVE
+REPORT
+UP
+DOWN
