@@ -183,5 +183,36 @@ final class RobotSpec extends Matchers with WordSpecLike {
       }
     }
   }
+
+  it should {
+    "aggregate reports" when {
+      "given multiple Report commands" in {
+        val startPos = BoardPos(0, 0, North)
+        val commands =
+          Seq(Place(startPos),
+              Move,
+              Move,
+              Right,
+              Report, //(0, 2, East)
+              Move,
+              Left,
+              Move,
+              Report, //(1, 3, North)
+              Left,
+              Move,
+              Left,
+              Move,
+              Move,
+              Move,
+              Report) //(0, 0, South)
+
+        val outcome = Robot.sequence(robot, commands)
+        outcome.reports should have ('size (3))
+        outcome.reports(0) should be (BoardPos(0, 2, East))
+        outcome.reports(1) should be (BoardPos(1, 3, North))
+        outcome.reports(2) should be (BoardPos(0, 0, South))
+      }
+    }
+  }
 }
 

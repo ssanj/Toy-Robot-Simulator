@@ -28,8 +28,7 @@ object Robot {
     *  @return Outcome The outcome of running the commands against the robot.
     */
   def sequence(robot: Robot, commands: Seq[Command]): Outcome =
-    commands.foldLeft(Outcome(robot)){(o, c) => Robot.instruct(o.robot, c)}
-
+    commands.foldLeft(Outcome(robot)){(o, c) => o ++ Robot.instruct(o.robot, c)}
   //for testing
   protected[robot] def moveByOne(robot: Robot): Outcome = robot match {
     case r @ RobotOnBoard(board, bp @ BoardPos(_, _, North)) =>

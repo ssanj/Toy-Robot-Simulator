@@ -6,7 +6,18 @@ package net.ssanj.robot
   * @param reports The output of running [[net.ssanj.robot.Report]] commands.
   */
 final case class Outcome(robot: Robot, reports: Seq[BoardPos] = Seq.empty[BoardPos]) {
+
+  //String-representation of reports.
   val value: String = Outcome.printReport(reports)
+
+  /** This method essentially maintains the history of reports across multiple Outcomes by
+    * combining two Outcomes to produce a third. The rules for combination are as follows:
+    *  1. Use the other Outcome's robot. (The later Outcome wins in terms of position)
+    *  1. Prepend this Outcome's reports to that of the other. (Maintains chronological reporting)
+    *
+    *  @param other An Outcome that occurs after this one.
+    */
+  def ++(other: Outcome): Outcome = other.copy(reports = reports ++ other.reports)
 }
 
 object Outcome {
