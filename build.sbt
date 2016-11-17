@@ -27,3 +27,7 @@ scalacOptions ++= Seq(
                       "-Ywarn-unused",
                       "-Ywarn-value-discard"
                      )
+
+scalacOptions in (Compile, console) ~= (_.filterNot(Seq("-Xfatal-warnings", "-Ywarn-unused-import") contains _))
+
+scalacOptions in (Test, console) := (scalacOptions in (Compile, console)).value

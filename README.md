@@ -42,6 +42,8 @@ sbt clean coverage test
 sbt coverageReport
 ```
 
+Reports can be found under __target/scala-2.11/scoverage-report/index.html__.
+
 ## Scapegoat
 
 
@@ -51,7 +53,7 @@ To run [Scapegoat](https://github.com/sksamuel/scapegoat) use:
 sbt scapegoat
 ```
 
-Reports can be found under __target/scala-2.11/scoverage-report/index.html__.
+Reports can be found under __target/scala-2.11/scapegoat-report/scapegoat.html__.
 
 ## Scaladoc
 
@@ -66,13 +68,29 @@ The API documentation can be found under __target/scala-2.11/api/index.html__.
 
 ## Using the API
 
-The __RobotController__ is the main entry point into the api. Use the __execute__ method to run a list of commands against a Robot. Here's some example code:
+The __RobotController__ is the main entry point into the api. Use the __execute__ method to run a list of commands against a Robot.
+
+Here's example of loading some commands from a file on the classpath:
 
 ```
-  import io.IO.loadCommandsFromClasspath
+  import net.ssanj.robot._
+  import io.IO
 
   val board    = Board(Size(5, 5))
-  val commands = loadCommandsFromClasspath("commands.txt")
+  val commands = IO.loadCommandsFromClasspath("commands.txt")
+  val output   = RobotController.execute(board, commands)
+
+  println(output.value)
+
+```
+
+Here's example of running commands directly against the __RobotController__:
+
+```
+  import net.ssanj.robot._
+
+  val board    = Board(Size(5, 5))
+  val commands = Seq(Place(BoardPos(0,0, East)), Move, Move, Move, Report)
   val output   = RobotController.execute(board, commands)
 
   println(output.value)
